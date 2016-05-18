@@ -28,8 +28,12 @@ export default class Note extends React.Component {
 			onKeyPress={this.checkEnter} />;
 	};
 	renderNote = () => {
+		const onDelete = this.props.onDelete;
 		// If the user clicks a normal note, trigger edit
-		return <div onClick={this.edit}>{this.props.task}</div>;
+		return (<div onClick={this.edit}><span className="task">{this.props.task}</span>{onDelete ? this.renderDelete() : null}</div>);
+	};
+	renderDelete = () => {
+		return <button className="delete-note" onClick={this.props.onDelete}>x</button>;
 	};
 	edit = () => {
 		// enter edit mode
