@@ -1,27 +1,25 @@
-import uuid from 'node-uuid';
 import React from 'react';
 import Notes from './Notes.jsx';
+import NoteActions from '../actions/NoteActions';
+import NoteStore from '../stores/NoteStore';
 
 export default class App extends React.Component {
 	constructor(props) {
 		super(props);
 
-		this.state = {
-			notes: [
-				{
-					id: uuid.v4(),
-					task: 'Learn Webpack'
-				},
-				{
-					id: uuid.v4(),
-					task: 'Learn React'
-				},
-				{
-					id: uuid.v4(),
-					task: 'Do Laundry'
-				}
-			]
-		};
+		// Flux is pretty Cool:
+		this.state = NoteStore.getState();
+	}
+	componentDidMount() {
+		NoteStore.listen(this.storeChanged);
+	}
+	componentWillUnmount() {
+		NoteStore.unlisten(this.storeChanged);
+	}
+	storeChanged = (state) => {
+		// Needs property initializer, otherwise
+		// strict mode defaults to 'undefined'
+		this.setState(state);
 	}
 	render() {
 		const notes = this.state.notes;
@@ -41,34 +39,18 @@ export default class App extends React.Component {
 		// Avoid bubbling to edit
 		e.stopPropagation();
 
-		this.setState({
-			notes: this.state.notes.filter(note => note.id !== id)
-		});
+		NoteActions.delete(id);
 	};
 
 	addNote = () => {
-		this.setState({
-			notes: this.state.notes.concat([{
-				id: uuid.v4(),
-				task: 'New Task'
-			}])
-		}, console.log("State Changed"))
+		NoteActions.create({task: 'New Task'});
 	};
 	editNote = (id, task) => {
 		// Don't modify if empty value
-		console.log(task);
-		console.log(id);
 		if(!task.trim()) {
 			return;
 		}
 
-		const notes = this.state.notes.map(note => {
-			if(note.id === id && task) {
-				note.task = task;
-			}
-			return note;
-		});
-
-		this.setState({notes});
+		NoteActions.update({id, task});
 	}
 }
