@@ -1,10 +1,11 @@
+import AltContainer from 'alt-container';
 import React from 'react';
 import Notes from './Notes.jsx';
 import NoteActions from '../actions/NoteActions';
 import NoteStore from '../stores/NoteStore';
 
 export default class App extends React.Component {
-	constructor(props) {
+	/*constructor(props) {
 		super(props);
 
 		// Flux is pretty Cool:
@@ -20,16 +21,18 @@ export default class App extends React.Component {
 		// Needs property initializer, otherwise
 		// strict mode defaults to 'undefined'
 		this.setState(state);
-	}
+	}*/
 	render() {
-		const notes = this.state.notes;
+		//const notes = this.state.notes;
 
 		return (
 			<div>
 				<button className="add-note" onClick={this.addNote}>+</button>
-				<Notes notes={notes} 
-				onEdit={this.editNote}
-				onDelete={this.deleteNote}/>
+				<AltContainer 
+				  stores={[NoteStore]}
+				  inject={{notes: () => NoteStore.getState().notes}}>
+					<Notes onEdit={this.editNote} onDelete={this.deleteNote}/>
+				</AltContainer>
 			</div>
 		)
 		
