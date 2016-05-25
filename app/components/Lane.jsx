@@ -78,9 +78,10 @@ export default class Lane extends React.Component {
 	activateLaneEdit = () => {
 		const laneId = this.props.lane.id;
 
-		LanceActions.update({id: laneId, editing: true});
+		LaneActions.update({id: laneId, editing: true});
 	};
 	activateNoteEdit(id) {
+		console.log("Activating Note Edit");
 		NoteActions.update({id, editing: true});
 	}
 	editNote = (id, task) => {
@@ -90,7 +91,7 @@ export default class Lane extends React.Component {
 
 			return;
 		}
-
+		console.log("Editing Note");
 		NoteActions.update({id, task, editing: false});
 	}
 }

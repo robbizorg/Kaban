@@ -24,8 +24,9 @@ class NoteStore {
 		return note;
 	}
 	update(updatedNote) {
+		console.log("Updated Note From Store called");
 		const notes = this.notes.map(note => {
-			if(node.id === updatedNote.id) {
+			if(note.id === updatedNote.id) {
 				// Object.assign Used, look it up
 				return Object.assign({}, note, updatedNote);
 			}

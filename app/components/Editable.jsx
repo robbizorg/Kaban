@@ -4,6 +4,9 @@ export default class Editable extends React.Component {
 	render() {
 		const {value, onEdit, onValueClick, editing, ...props} = this.props;
 		
+		console.log("Rendering Editable");
+		console.log(editing);
+		console.log(value);
 		return (
 			<div {...props}> 
 				{editing ? this.renderEdit() : this.renderValue()}
@@ -25,7 +28,7 @@ export default class Editable extends React.Component {
 	renderValue = () => {
 		const onDelete = this.props.onValueClick;
 		// If the user clicks a normal note, trigger edit
-		return (<div onClick={this.edit}><span className="value">{this.props.value}</span>{onDelete ? this.renderDelete() : null}</div>);
+		return (<div onClick={this.props.onValueClick}><span className="value">{this.props.value}</span>{onDelete ? this.renderDelete() : null}</div>);
 	};
 	renderDelete = () => {
 		return <button className="delete" onClick={this.props.onDelete}>x</button>;
