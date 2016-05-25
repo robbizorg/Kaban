@@ -23,16 +23,32 @@ class LaneStore {
 			lanes: lanes.concat(lane)
 		});
 	}
-	attachToLane({noteId, laneId}) {
-		console.log("Im Being Called");
+	update(updatedLane) {
 		const lanes = this.lanes.map(lane => {
-			console.log("Iterating through lanes");
+			if(lane.id === updatedLane.id) {
+				return Object.assign({}, lane, updatedlane);
+			}
+
+			return lane;
+		});
+
+		this.setState({lanes});
+	}
+	delete(id) {
+		this.setState({
+			lanes: this.lanes.filter(lane => lane.id !== id)
+		});
+	}
+	attachToLane({noteId, laneId}) {
+		//console.log("Im Being Called");
+		const lanes = this.lanes.map(lane => {
+			//console.log("Iterating through lanes");
 			if (lane.id === laneId) {
-				console.log("Its a match!");
+				//console.log("Its a match!");
 				if(lane.notes.includes(noteId)) {
 					console.warn('Already attached note to lane', lanes);
 				} else {
-					console.log("Pushing Notes");
+					//console.log("Pushing Notes");
 					lane.notes.push(noteId);
 				}
 			}
